@@ -131,20 +131,26 @@ class Stage {
 class HoldCounter {
     constructor() {
         this.deg = 0
+        this.lineIndicator = new LineIndicator()
+    }
+    updateLineIndicator() {
+        this.lineIndicator.update(this.deg/180)
     }
     start() {
         this.interval = setInterval(()=>{
             this.deg++
+            this.updateLineIndicator()
             if(this.deg > 180) {
                 this.deg = 180
             }
             console.log(this.deg)
-        },50)
+        },10)
     }
     stop(cb) {
         clearInterval(this.interval)
         cb(this.deg)
         this.deg = 0
+        this.updateLineIndicator()
     }
 }
 class LineIndicator {
@@ -156,7 +162,7 @@ class LineIndicator {
         this.div.style.background = '#69F0AE'
         this.div.style.width = 0
         this.div.style.height = size/10
-        this.div.style.borderRadius = size/20
+        this.div.style.borderRadius = `${size/20}px`
         this.div.style.position = 'absolute'
         this.div.style.left = w/4
         this.div.style.top = 4*h/5
