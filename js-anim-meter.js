@@ -32,7 +32,7 @@ class MeterHolder {
 }
 class MeterRotator {
     constructor() {
-
+        this.state = new MeterState()
     }
     draw(context) {
         context.save()
@@ -41,6 +41,8 @@ class MeterRotator {
         context.beginPath()
         context.arc(0,0,size,Math.PI,2*Math.PI)
         context.fill()
+        context.save()
+        context.rotate((this.deg*Math.PI/180)*this.state.scale)
         context.fillStyle = 'black'
         context.beginPath()
         context.arc(0,-size/3,size/3,0,Math.PI)
@@ -48,11 +50,34 @@ class MeterRotator {
         context.lineTo(size/3,-size/3)
         context.fill()
         context.restore()
+        context.restore()
     }
     update(stopcb) {
-
+        this.state.update(stopcb)
     }
     startUpdating(deg,startcb) {
-
+        this.state.startUpdating(deg,startcb)
+    }
+}
+class MeterState {
+    constructor() {
+        this.scale = 0
+        this.deg = 0
+        this.maxDeg = 0
+        this.scaleDeg = 0
+    }
+    startUpdating(deg,startcb) {
+        this.maxDeg = deg
+        startcb()
+    }
+    update(stopcb) {
+        this.scaleDeg += 10
+        this.scale = Math.cos(this.scaleDeg*Math.PI/180)
+        this.deg = this.maxDeg*this.scale
+        if(this.scaleDeg > 180) {
+            this.scaleDeg = 0
+            this.scale = 0
+            stopcb()
+        }
     }
 }
