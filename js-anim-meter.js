@@ -156,6 +156,7 @@ class HoldCounter {
 class LineIndicator {
     constructor() {
         this.createDom()
+        this.createBackDom()
     }
     createDom() {
         this.div = document.createElement('div')
@@ -164,12 +165,23 @@ class LineIndicator {
         this.div.style.height = size/10
         this.div.style.borderRadius = `${size/20}px`
         this.div.style.position = 'absolute'
-        this.div.style.left = w/4
+        this.div.style.left = w/2-w/8
         this.div.style.top = 4*h/5
+    }
+    createBackDom() {
+        this.backDiv = document.createElement('div')
+        const divStyle = this.div.style
+        const attribs = Object.keys(divStyle)
+        attribs.forEach((attrib)=>{
+            this.backDiv.style[attrib] = this.div.style[attrib]
+        })
+        this.backDiv.style.background = '#BDBDBD'
+        this.backDiv.style.width = w/4
+        document.body.appendChild(this.backDiv)
         document.body.appendChild(this.div)
     }
     update(scale) {
-        this.div.style.width = (w/2)*scale
+        this.div.style.width = (w/4)*scale
     }
 }
 const stage = new Stage()
