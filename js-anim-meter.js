@@ -147,6 +147,25 @@ class HoldCounter {
         this.deg = 0
     }
 }
+class LineIndicator {
+    constructor() {
+        this.createDom()
+    }
+    createDom() {
+        this.div = document.createElement('div')
+        this.div.style.background = '#69F0AE'
+        this.div.style.width = 0
+        this.div.style.height = size/10
+        this.div.style.borderRadius = size/20
+        this.div.style.position = 'absolute'
+        this.div.style.left = w/4
+        this.div.style.top = 4*h/5
+        document.body.appendChild(this.div)
+    }
+    update(scale) {
+        this.div.style.width = (w/2)*scale
+    }
+}
 const stage = new Stage()
 const holdCounter = new HoldCounter()
 var isDown = false
