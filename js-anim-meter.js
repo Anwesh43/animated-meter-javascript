@@ -126,3 +126,36 @@ class Stage {
         })
     }
 }
+class HoldCounter {
+    constructor() {
+        this.deg = 0
+    }
+    start() {
+        this.interval = setInterval(()=>{
+            this.deg++
+        },50)
+    }
+    stop(cb) {
+        clearInterval(this.interval)
+        cb(this.deg)
+        this.deg = 0
+    }
+}
+const stage = new Stage()
+const holdCounter = new HoldCounter()
+var isDown = false
+stage.render()
+window.onmousedown = (event) => {
+    if(!isDown) {
+        holdCounter.start()
+        isDown = true
+    }
+}
+window.onmouseup = (event) => {
+    if(isDown) {
+        isDown = false
+        holdCounter.stop((deg)=>{
+            stage.startRendering(deg)
+        })
+    }
+}
