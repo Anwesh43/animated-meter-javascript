@@ -100,3 +100,29 @@ class Animator  {
         }
     }
 }
+class Stage {
+    constructor() {
+        this.canvas = document.createElement('canvas')
+        this.canvas.width = 2*size
+        this.canvas.height = size
+        this.context = this.canvas.getContext('2d')
+        document.body.appendChild(this.canvas)
+        this.holder = new MeterHolder(['#FF5722','#01579B','#9C27B0','#42A5F5','#f44336'])
+        this.meterRotator = new MeterRotator()
+        this.animator = new Animator()
+    }
+    render() {
+        this.context.clearRect(0,0,2*size,size)
+        this.holder.draw(this.context)
+        this.meterRotator.draw(this.context)
+        this.meterRotator.update(()=> {
+            this.animator.stop()
+        })
+    }
+    startRendering(deg) {
+        this.meterRotator.startUpdating(deg)
+        this.animator(()=>{
+            this.render()
+        })
+    }
+}
